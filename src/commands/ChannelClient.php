@@ -55,7 +55,7 @@ class ChannelClient extends Command
 
         $argv[0] = __FILE__;
         $argv[1] = $action;
-        $argv[2] = $this->option('--d') ? '-d' : '';
+        $argv[2] = $this->option('d') ? '-d' : '';
 
         $agreement = $this->ask('Please enter agreement');
         $address = $this->ask('Please enter ip address');
