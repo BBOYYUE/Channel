@@ -2,7 +2,7 @@
 
 namespace Bboyyue\Channel;
 
-class AlphaChannel
+class Channel
 {
     static function load()
     {
