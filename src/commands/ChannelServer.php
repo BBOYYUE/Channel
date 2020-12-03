@@ -19,7 +19,7 @@ class ChannelServer extends Command
      *
      * @var string
      */
-    protected $signature = 'Channel:server {action} {--option}';
+    protected $signature = 'Channel:server {action} {--d}';
 
     /**
      * The console command description.
@@ -56,7 +56,7 @@ class ChannelServer extends Command
 
         $argv[0] = __FILE__;
         $argv[1] = $action;
-        $argv[2] = $this->option('option') ? $this->option('option') : '';
+        $argv[2] = $this->option('--d') ? '-d' : '';
 
 //        $agreement = $this->ask('Please enter agreement:');
         $agreement = 'websocket';

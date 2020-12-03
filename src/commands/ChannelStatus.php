@@ -19,7 +19,7 @@ class ChannelStatus extends Command
      *
      * @var string
      */
-    protected $signature = 'Channel:status {action} {--option}';
+    protected $signature = 'Channel:status {action}';
 
     /**
      * The console command description.
