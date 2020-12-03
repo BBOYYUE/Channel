@@ -1,37 +1,36 @@
 <?php
 
 
-namespace Bboyyue\AlphaChannel\Commands;
+namespace Bboyyue\Channel\Commands;
 
-use Bboyyue\AlphaChannel\Worker\Worker;
+use Bboyyue\Channel\Worker\Worker;
 use Illuminate\Console\Command;
-use Bboyyue\AlphaChannel\worker\server;
+use Bboyyue\Channel\worker\client;
 
 /**
  * Class Accept
  * @package Bboyyue\WebsocketBridge\Commands
  * 接收器
  */
-class AlphaChannelServer extends Command
+class ChannelClient extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'AlphaChannel:server {action} {--option}';
+    protected $signature = 'Channel:client {action} {--option}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'alpha channel server';
+    protected $description = 'alpha channel client';
 
     /*
      * 指定监听的端口
      */
-    protected $accept = '8084';
 
 
     /**
@@ -58,12 +57,14 @@ class AlphaChannelServer extends Command
         $argv[1] = $action;
         $argv[2] = $this->option('option') ? $this->option('option') : '';
 
-//        $agreement = $this->ask('Please enter agreement:');
-        $agreement = 'websocket';
+        $agreement = $this->ask('Please enter agreement');
+        $address = $this->ask('Please enter ip address');
+        $port = $this->ask('Please enter port');
 
-        $address = $this->ask('Please enter ip address:');
-        $port = $this->ask('Please enter port:');
-        $server = new server($address,$port);
-        return $server->listen();
+//        $server_agreement = $this->ask('Please enter server agreement:');
+        $server_agreement = 'websocket';
+        $server_address = $this->ask('Please enter server ip address');
+        $server_port = $this->ask('Please enter server port');
+        return client::listen($agreement.'://'.$address.":".$port,$server_agreement.'://'.$server_address.":".$server_port);
     }
 }

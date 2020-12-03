@@ -1,25 +1,25 @@
 <?php
 
 
-namespace Bboyyue\AlphaChannel\Commands;
+namespace Bboyyue\Channel\Commands;
 
-use Bboyyue\AlphaChannel\Worker\Worker;
+use Bboyyue\Channel\Worker\Worker;
 use Illuminate\Console\Command;
-use Bboyyue\AlphaChannel\worker\status;
+use Bboyyue\Channel\worker\status;
 
 /**
  * Class Accept
  * @package Bboyyue\WebsocketBridge\Commands
  * 接收器
  */
-class AlphaChannelStatus extends Command
+class ChannelStatus extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'AlphaChannel:status {action} {--option}';
+    protected $signature = 'Channel:status {action} {--option}';
 
     /**
      * The console command description.

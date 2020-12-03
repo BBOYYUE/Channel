@@ -1,6 +1,6 @@
 <?php
 
-namespace Bboyyue\AlphaChannel\worker;
+namespace Bboyyue\Channel\worker;
 
 use Channel\Server as ServerMange;
 use Illuminate\Support\Facades\Redis as RedisMange;

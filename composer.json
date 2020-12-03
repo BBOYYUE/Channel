@@ -1,5 +1,5 @@
 {
-    "name": "bboyyue/alphachannel",
+    "name": "bboyyue/channel",
     "authors": [
         {
             "name": "BBOYYUE",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Bboyyue\\AlphaChannel\\": "./src/"
+            "Bboyyue\\Channel\\": "./src/"
         }
     },
     "extra": {

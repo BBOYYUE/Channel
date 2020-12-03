@@ -1,5 +1,5 @@
 <?php
-namespace Bboyyue\AlphaChannel\worker;
+namespace Bboyyue\Channel\worker;
 use Workerman\Worker;
 use Channel\Client as ClientMange;
 use Illuminate\Support\Facades\Redis as RedisMange;
