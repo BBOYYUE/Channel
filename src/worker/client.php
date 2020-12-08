@@ -16,16 +16,27 @@ class client
      * @param string $server
      * @param string $product
      */
-    static function listen($client = 'websocket://0.0.0.0:1234', $server = 'websocket://127.0.0.1:2206', $product = '')
+    static function listen($client = 'websocket://0.0.0.0:1234', $server = 'websocket://127.0.0.1:2206', $product = '',$crt='',$key='')
     {
 
         $server_agreement = Str::before($server, ':');
         $server_ip = Str::after($server, '://');
         $server_port = Str::after($server_ip, ":");
         $server_ip = Str::before($server_ip, ":");
-
-        $worker = new Worker($client);
-
+        if($crt&&$key){
+            $context = array(
+                'ssl' => array(
+                    // 请使用绝对路径
+                    'local_cert'                 => $crt, // 也可以是crt文件
+                    'local_pk'                   => $key,
+                    'verify_peer'                => false,
+                )
+            );
+            $worker = new Worker($client,$context);
+        }else {
+            $worker = new Worker($client);
+        }
+        $worker->transport = 'ssl';
         $worker->count = 1;
         // 全局群组到连接的映射数组
         $worker->onWorkerStart = function ($worker) use ($product, $server_agreement, $server_ip, $server_port) {

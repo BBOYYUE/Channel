@@ -60,11 +60,18 @@ class ChannelClient extends Command
         $agreement = $this->ask('Please enter agreement');
         $address = $this->ask('Please enter ip address');
         $port = $this->ask('Please enter port');
+        $openssl = $this->ask('Please enter open ssl y or n');
+        $crt = '';
+        $key = '';
+        if($openssl == 'Y' || $openssl == 'y') {
+            $crt = $this->ask('Please enter ssl crt');
+            $key = $this->ask('Please enter ssl key');
+        }
 
 //        $server_agreement = $this->ask('Please enter server agreement:');
         $server_agreement = 'websocket';
         $server_address = $this->ask('Please enter server ip address');
         $server_port = $this->ask('Please enter server port');
-        return client::listen($agreement.'://'.$address.":".$port,$server_agreement.'://'.$server_address.":".$server_port);
+        return client::listen($agreement.'://'.$address.":".$port,$server_agreement.'://'.$server_address.":".$server_port,$crt,$key);
     }
 }
