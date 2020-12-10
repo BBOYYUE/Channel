@@ -56,7 +56,7 @@ class ChannelClient extends Command
         $argv[0] = __FILE__;
         $argv[1] = $action;
         $argv[2] = $this->option('d') ? '-d' : '';
-
+/*
         $agreement = $this->ask('Please enter agreement');
         $address = $this->ask('Please enter ip address');
         $port = $this->ask('Please enter port');
@@ -67,11 +67,12 @@ class ChannelClient extends Command
             $crt = $this->ask('Please enter ssl crt');
             $key = $this->ask('Please enter ssl key');
         }
-
 //        $server_agreement = $this->ask('Please enter server agreement:');
         $server_agreement = 'websocket';
         $server_address = $this->ask('Please enter server ip address');
         $server_port = $this->ask('Please enter server port');
-        return client::listen($agreement.'://'.$address.":".$port,$server_agreement.'://'.$server_address.":".$server_port,$crt,$key);
+*/
+        //return client::listen($agreement.'://'.$address.":".$port,$server_agreement.'://'.$server_address.":".$server_port,$crt,$key);
+        return client::listen();
     }
 }
