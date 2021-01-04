@@ -58,12 +58,8 @@ class ChannelServer extends Command
         $argv[1] = $action;
         $argv[2] = $this->option('d') ? '-d' : '';
 
-//        $agreement = $this->ask('Please enter agreement:');
         $agreement = 'websocket';
-
-        $address = $this->ask('Please enter ip address:');
-        $port = $this->ask('Please enter port:');
-        $server = new server($address,$port);
+        $server = new server(config('services.channel.server.ip'),config('services.channel.server.port'));
         return $server->listen();
     }
 }
