@@ -3,42 +3,103 @@
 
 namespace Bboyyue\Channel\worker\client;
 
+use Bboyyue\Channel\worker\config;
 use Channel\Client as ClientMange;
 use Illuminate\Support\Facades\Redis as RedisMange;
+use Bboyyue\Channel\worker\client\container;
+use Workerman\Lib\Timer;
+
+
 class event
 {
     // status 负责统计当前状态的类
     public $status;
     public $log;
+    protected $container;
+    protected $config;
 
-    public function __construct()
+    public function __construct(config $config)
     {
-        $this -> status = new status();
-        $this -> log = new log();
+//        $this -> status = new status();
+//        $this -> log = new log();
+        $this -> config = $config;
+
     }
 
     public function onConnect($connection)
     {
-        $this->status->addClientCount();
+//        $this->status->addClientCount();
     }
+
+    /**
+     * @param $worker
+     * 这里建立了客户端和服务端的连接
+     *
+     */
     public function onWorkerStart($worker)
     {
-        $this->status->addClientWorker($worker->id);
         $channel = 'channel';
         // Channel客户端连接到Channel服务端
-        ClientMange::connect(config('services.channel.client.server_ip'), config('services.channel.client.server_port'));
+        ClientMange::connect('127.0.0.1', '2206');
 
         // 监听全局分组发送消息事件
+        // 这里根据消息中的设备号 进行消息转发
         ClientMange::on($channel, function ($event_data) {
             global $equipment_number_map;
             $equipment_number = $event_data['equipment_number'];
             if (isset($equipment_number_map[$equipment_number])) {
+                if(is_array($event_data['message'])||is_object($event_data['message'])){
+                    $event_data['message'] = json_encode($event_data['message']);
+                }
                 foreach ($equipment_number_map[$equipment_number] as $con) {
                     $con->send($event_data['message']);
                 }
             }
         });
         // 心跳,如果十秒不发消息自动断开
+        $this->heart($worker);
+    }
+
+    public function onMessage($connection,$data)
+    {
+        global $equipment_number_map;
+        // 心跳功能必须要的
+        try {
+            $connection->lastMessageTime = time();
+            $container = container::make($this->config,$data);
+            if($error = $container->getErrorMsg()) throw new \Exception("容器初始化失败 :". $error);
+
+            $data = $container->onBegin($connection);
+            if($error = $container->getErrorMsg()) throw new \Exception("Begin 事件执行失败:". $error);
+            $data = $container->forTapType($connection);
+
+            if($error = $container->getErrorMsg()) throw new \Exception("TapType 事件执行失败:".$error);
+            $container->onEnd($connection);
+            if($error = $container->getErrorMsg()) throw new \Exception("End 事件执行失败:".$error);
+        }catch (\Exception $e){
+            $connection->send($e->getMessage());
+        }
+    }
+    public function onClose($connection)
+    {
+        global $equipment_number_map;
+        // 遍历连接加入的所有群组，从group_con_map删除对应的数据
+        if (isset($con->equipment_number)) {
+            foreach ($con->equipment_number as $equipment_number) {
+                // unset 拥有这个设备号的连接
+                unset($equipment_number_map[$equipment_number][$con->id]);
+                // 如果这个设备号没有人连,那么清空设备号
+                if (empty($equipment_number_map[$equipment_number])) {
+                    unset($equipment_number_map[$equipment_number]);
+                }
+            }
+        }
+
+    }
+    public function onWorkerStop($connection)
+    {}
+    protected function heart($worker)
+    {
         Timer::add(10, function() use ($worker){
             $time_now = time();
             foreach($worker->connections as $connection) {
@@ -54,84 +115,6 @@ class event
             }
         });
     }
-    public function onMessage($connection,$data)
-    {
-        global $equipment_number_map;
-        $connection->lastMessageTime = time();
-        $data = json_decode($data, true);
-
-        // 默认执行的操作是 listen
-        $cmd = isset($data['method']) ? $data['method'] : 'listen';
-        $channel = 'channel';
-        if($this->check($cmd))
-        {
-            $method = container::make($cmd);
-            $method->run($method);
-            if($method->send) {
-                ClientMange::publish($channel, $method->data);
-                $this->log($method->name, $method->data);
-            }
-        }else{
-            $this->log('error', $cmd);
-        }
-
-        // 设备列表
-        /*
-        switch ($cmd) {
-            // 需要监听某个频道
-            case "listen":
-                // 通过设备id获取链接id.
-                $equipment_number_map[$equipment_number][$connection->id] = $connection;
-                // 保存这个链接和内个频道有通讯.
-                $con->equipment_number = isset($con->equipment_number) ? $con->equipment_number : array();
-                // 保存这个设备在内个频道
-                $con->chanenl_id[$equipment_number] = $channel;
-                break;
-            // 需要往某个频道发送消息
-            case "send":
-                // 往指定的频道发消息
-                if(!is_string($data['message'])) $data['message']=json_encode($data['message']);
-                ClientMange::publish($channel, array(
-                    'equipment_number' => $equipment_number,
-                    'message' => $data['message']
-                ));
-                break;
-        }
-        */
-    }
-    public function onClose($connection)
-    {
-        global $equipment_number_map;
-        // 遍历连接加入的所有群组，从group_con_map删除对应的数据
-        if (isset($con->equipment_number)) {
-            foreach ($con->equipment_number as $equipment_number) {
-                unset($equipment_number_map[$equipment_number][$con->id]);
-                if (empty($equipment_number_map[$equipment_number])) {
-                    unset($equipment_number_map[$equipment_number]);
-                }
-            }
-        }
-
-    }
-    public function onWorkerStop($connection)
-    {
-
-    }
-    public  function send()
-    {
-
-    }
-    public function listen($connection,$data)
-    {
-        $equipment_number = $data['equipment_number'];
-        $equipment_number_map[$equipment_number][$connection->id] = $connection;
-        // 保存这个链接和内个频道有通讯.
-        $this->addClientEquipment($connection->id,$equipment_number);
-        if(isset($connection->equipment_number)){
-            $connection->equipment_number[] = $equipment_number;
-        }else{
-            $connection->equipment_number = [$equipment_number];
-        }
-
-    }
 }
+// 全局的保存链接的变量
+$equipment_number_map = array();

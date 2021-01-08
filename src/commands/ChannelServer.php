@@ -58,8 +58,7 @@ class ChannelServer extends Command
         $argv[1] = $action;
         $argv[2] = $this->option('d') ? '-d' : '';
 
-        $agreement = 'websocket';
-        $server = new server(config('services.channel.server.ip'),config('services.channel.server.port'));
+        $server = new server('0.0.0.0','2206');
         return $server->listen();
     }
 }

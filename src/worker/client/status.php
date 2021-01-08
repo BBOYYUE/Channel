@@ -3,6 +3,7 @@
 
 namespace Bboyyue\Channel\worker\client;
 
+use Illuminate\Support\Facades\Redis as RedisMange;
 
 class status
 {

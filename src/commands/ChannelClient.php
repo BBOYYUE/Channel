@@ -55,6 +55,7 @@ class ChannelClient extends Command
         $argv[0] = __FILE__;
         $argv[1] = $action;
         $argv[2] = $this->option('d') ? '-d' : '';
-        return client::listen();
+        $client = new client();
+        return $client->listen();
     }
 }
