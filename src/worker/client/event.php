@@ -110,6 +110,11 @@ class event
                 }
                 // 上次通讯时间间隔大于心跳间隔，则认为客户端已经下线，关闭连接
                 if ($time_now - $connection->lastMessageTime > 55) {
+                    $data = [
+                        'taoType'=>113,
+                        'message'=>"你没有心跳!"
+                    ];
+                    $connection->send(json_encode($data));
                     $connection->close();
                 }
             }
