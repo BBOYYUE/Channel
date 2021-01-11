@@ -21,9 +21,10 @@ class container
     protected $channel = 'channel';
     protected $equipment_number;
     protected $tapType;
+    protected $null_operation;
     protected $errorMsg;
 
-    public function __construct($data){
+    public function  __construct($data){
         $this->data = $data;
         $this->checkData();
     }
@@ -121,6 +122,7 @@ class container
     }
     public function forTapType($connection)
     {
+        if(in_array($this->tapType,$this->null_operation)) return;
         try {
             if ($this->tapType) {
                 if (isset($this->forTapType[$this->tapType])) {
@@ -156,6 +158,7 @@ class container
                 $container->onBegin = $config->getOnBegin();
                 $container->forTapType = $config->getForTapType();
                 $container->onEnd = $config->getOnEnd();
+                $container->null_operation = $config->getNullOperation();
             } else {
                 throw new configException('方法不存在');
             }

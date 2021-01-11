@@ -20,23 +20,11 @@ bboyyue/channel 是一个基于workerMan的分频道websocket解决方案
             - port
             - ip
             - proc_count 进程数
-    3. container 容器 可以在容器注册一些方法
+    3. container 容器 可以在容器注册一些方法,方法可以绑定事件,比如send需要执行内些事件
        - send  发送的方法
-            - forBegin  // 在send之前
-            - forEnd    // 在send之后
-            - forTapType  // 当TapType 为某个值时
        - listen  监听
-            - forBegin  // 在listen之前
-            - forEnd    // 在listen之后
-            - forTapType  // 当TapType 为某个值时
        - query  查询
-            - forBegin  // 在query之前
-            - forEnd    // 在query之后
-            - forTapType  // 当TapType 为某个值时
        - close_listen 取消监听  
-            - forBegin  // 在query之前
-            - forEnd    // 在query之后
-            - forTapType  // 当TapType 为某个值时
     4. event 事件,事件可以绑定操作
         - forBegin
         - forEnd
@@ -64,3 +52,6 @@ bboyyue/channel 是一个基于workerMan的分频道websocket解决方案
     5. 异常处理
        - configException 会写入到日志里面.
        - containerException 会返回给客户端.
+    6. container 容器
+       容器需要与 config 配合使用, 容有一个静态的 make 方法可以返回一个容器实例.
+       容器实例的属性包含传入的消息内容,和当前消息对应的方法和事件.

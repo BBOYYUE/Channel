@@ -27,7 +27,8 @@ class config
     private $errorMsg;
 // 当前进行的操作
     protected $name;
-
+// 空操作
+    protected $null_operation;
 
     function __construct()
     {
@@ -35,6 +36,7 @@ class config
         $this->method_list = array_keys(config("channel.container"));
         // 获取事件方法
         $this->event_list = array_keys(config("channel.event"));
+        $this->null_operation = config("channel.null_operation");
 
         // 初始化配置项
         $this->init_connect();
@@ -115,6 +117,9 @@ class config
         return $this->server['content'];
     }
 
+    public function getNullOperation(){
+        return $this->null_operation;
+    }
     public function getClientLink()
     {
         return $this->client['protocol'] . "://" . $this->client['ip'] . ':' . $this->client['port'];

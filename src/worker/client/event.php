@@ -76,6 +76,7 @@ class event
             if($error = $container->getErrorMsg()) throw new \Exception("TapType 事件执行失败:".$error);
             $container->onEnd($connection);
             if($error = $container->getErrorMsg()) throw new \Exception("End 事件执行失败:".$error);
+
         }catch (\Exception $e){
             $connection->send($e->getMessage());
         }
