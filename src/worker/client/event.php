@@ -20,15 +20,12 @@ class event
 
     public function __construct(config $config)
     {
-//        $this -> status = new status();
-//        $this -> log = new log();
         $this -> config = $config;
 
     }
 
     public function onConnect($connection)
     {
-//        $this->status->addClientCount();
     }
 
     /**

@@ -14,7 +14,6 @@ class debug extends onEnd
             'method'=>'send',
             'equipment_number'=>999
         ];
-        $val = $data;
         if(is_array($data)||is_object($data))  $debug['message'] = json_encode($data);
         else $debug['message'] = $data;
         ClientMange::publish($data['channel'],$debug);

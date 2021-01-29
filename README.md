@@ -35,9 +35,9 @@ bboyyue/channel 是一个基于workerMan的分频道websocket解决方案
        - default 分配频道,每台设备上线的时候都会说明自己的设备号,服务器会默认以当前设备的设备号建立专用频道.
          没有说明自己设备号的设备将生成一个唯一的临时设备号. 连接成功之后会返回一个设备号.
        - send 发送消息, 向指定的频道发送消息.注意 send方法不会接收到发送成功的消息,或者返回值.
-         - listen 监听指定的频道, 需要手动监听自己的设备号,才能收到自己的消息.
-         - query 向服务器发送消息, 发送成功后会接受到返回的消息
-         - close_listen 取消监听某个频道
+       - listen 监听指定的频道, 需要手动监听自己的设备号,才能收到自己的消息.
+       - query 向服务器发送消息, 发送成功后会接受到返回的消息
+       - close_listen 取消监听某个频道
     2. server 服务端
        - default 转发功能
     3. status 状态信息
@@ -55,3 +55,16 @@ bboyyue/channel 是一个基于workerMan的分频道websocket解决方案
     6. container 容器
        容器需要与 config 配合使用, 容有一个静态的 make 方法可以返回一个容器实例.
        容器实例的属性包含传入的消息内容,和当前消息对应的方法和事件.
+       
+ 4. 自带的事件:
+    1. 全局事件 
+        1. debug 开启之后,会将所有消息转发到999频道.
+        2. check equipment_number . 如果传入的数据中没有 equipment_number 那么会返回一个临时的设备编号 ,消息中的 tapType = 153
+    2. 方法事件
+        1. query 
+            1. heart 心跳功能,默认心跳 tapType = 113 , 接受到来自 113 的消息会返回 消息 
+        2. listen
+            1. bind 将当前设备与当前连接绑定在一起
+        3. send
+            1. forward 转发功能
+    
