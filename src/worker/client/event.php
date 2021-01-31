@@ -95,7 +95,6 @@ class event
                 }
             }
         }
-
     }
     public function onWorkerStop($connection)
     {}
