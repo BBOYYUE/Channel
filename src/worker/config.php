@@ -2,10 +2,12 @@
 
 
 namespace Bboyyue\Channel\worker;
+use Bboyyue\Channel\worker\config\Container;
 
 
 class config
 {
+    use Container;
 //  connect 中的一些配置
     protected $server;
     protected $client;
@@ -44,6 +46,10 @@ class config
         $this->init_event();
     }
 
+    /**
+     * 载入链接配置
+     * 将配置项申明为类属性
+     */
     protected function init_connect()
     {
         $this->server = config("channel.connect.server");
@@ -51,6 +57,7 @@ class config
     }
 
     /**
+     * 载入容器配置
      * 将配置项申明为类属性
      */
     protected function init_container()
@@ -66,6 +73,7 @@ class config
     }
 
     /**
+     * 载入事件配置
      * 将配置项申明为类属性
      */
     protected function init_event()
@@ -79,33 +87,7 @@ class config
         }
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     * 调用容器方法时,需要先设置当前操作的容器方法类型
-     */
-    public function setMethod(string $name)
-    {
-        try {
-            if (in_array($name,$this->method_list)) {
-                $this->name = $name;
-            } else {
-                throw new \Exception('请求的方法不存在');
-            }
-        } catch (\Exception $e) {
-            $this->errorMsg = "处理传入的 method 的时候出现了问题: ".$e->getMessage();
-        }
-        return $this;
-    }
 
-    /**
-     * @param string $method
-     * @return mixed
-     */
-    public function checkMethod(string $method){
-        if(in_array($method,$this->method_list)) return true;
-        else return false;
-    }
 
     public function getServerPort()
     {
