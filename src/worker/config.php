@@ -94,9 +94,9 @@ class config
         return $this->server['port'];
     }
 
-    public function getServerContent()
+    public function getServerContext()
     {
-        return $this->server['content'];
+        return $this->server['context'];
     }
 
     public function getNullOperation(){

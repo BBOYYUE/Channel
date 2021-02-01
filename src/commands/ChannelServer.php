@@ -58,7 +58,7 @@ class ChannelServer extends Command
         $argv[1] = $action;
         $argv[2] = $this->option('d') ? '-d' : '';
 
-        $server = new server('0.0.0.0','2206');
+        $server = new server('127.0.0.1','2206');
         return $server->listen();
     }
 }
