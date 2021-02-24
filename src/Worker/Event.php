@@ -104,9 +104,8 @@ class Event
      * 接收到连接发送的消息时执行的方法
      * @param $connection
      * @param $data
-     * @return array
      */
-    public function onMessage($connection,$data): array
+    public function onMessage($connection,$data)
     {
         try {
             $message = new Message($data);
