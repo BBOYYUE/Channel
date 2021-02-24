@@ -1,5 +1,5 @@
 <?php
-
+namespace Bboyyue\Channel\Exception;
 
 class ErrorEquipmentNumber extends BaseException
 {

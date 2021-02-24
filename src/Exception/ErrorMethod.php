@@ -1,5 +1,5 @@
 <?php
-
+namespace Bboyyue\Channel\Exception;
 
 class ErrorMethod extends BaseException
 {

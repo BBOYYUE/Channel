@@ -4,10 +4,12 @@
 namespace Bboyyue\Channel\Worker;
 
 
-use ErrorData;
-use ErrorEquipmentNumber;
-use ErrorMessage;
-use ErrorMethod;
+
+
+use Bboyyue\Channel\Exception\ErrorData;
+use Bboyyue\Channel\Exception\ErrorEquipmentNumber;
+use Bboyyue\Channel\Exception\ErrorMessage;
+use Bboyyue\Channel\Exception\ErrorMethod;
 
 class Message
 {
@@ -25,7 +27,7 @@ class Message
     {
         try {
             if(!$this->checkString($data)) throw new \Exception(' ');
-
+            $data = json_decode($data);
             $equipmentNumber = $data->equipment_number;
             $method = $data->method;
             $message = $data->message;

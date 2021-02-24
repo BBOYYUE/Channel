@@ -1,5 +1,7 @@
 <?php
+namespace Bboyyue\Channel\Exception;
 
+use Exception;
 
 class BaseException extends Exception
 {

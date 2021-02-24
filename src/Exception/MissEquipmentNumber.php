@@ -1,5 +1,5 @@
 <?php
-
+namespace Bboyyue\Channel\Exception;
 
 class MissEquipmentNumber extends BaseException
 {
