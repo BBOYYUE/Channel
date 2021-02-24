@@ -87,6 +87,7 @@ class Event
     {
         $connection->id = $connection->worker->id.$connection->id;
         $connection->client = new Client($connection->id);
+        $connection->client->setLastMessageTime(time());
         $msg = ['tapTip'=>200,'msg'=>'连接成功'];
         $connection->send(json_encode($msg));
     }
