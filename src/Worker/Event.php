@@ -113,7 +113,7 @@ class Event
             $connection->client->setLastMessageTime(time());
         } catch (Exception $e){
             if($e instanceof \BaseException) $connection->send($e->getMsg());
-            else $connection->send("未知错误");
+            else $connection->send($e->getMessage());
         }
     }
 
