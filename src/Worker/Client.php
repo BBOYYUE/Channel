@@ -53,26 +53,26 @@ class Client
     }
     public function setEquipmentNumberNormalMap($val)
     {
-        if(!in_array($this->equipmentNumberNormalMap,$val)&&in_array($this->equipmentNumberSendMap,$val)&&in_array($this->equipmentNumberListenMap,$val)) {
+        if(!in_array($val,$this->equipmentNumberNormalMap)&&in_array($this->equipmentNumberSendMap,$val)&&in_array($this->equipmentNumberListenMap,$val)) {
             $this->equipmentNumberNormalMap = [$val];
         }
     }
 
     public function addEquipmentNumberListenMap($val)
     {
-        if(!in_array($this->equipmentNumberListenMap,$val)) {
+        if(!in_array($val,$this->equipmentNumberListenMap)) {
             $this->equipmentNumberListenMap[] = $val;
         }
     }
     public function addEquipmentNumberSendMap($val)
     {
-        if(!in_array($this->equipmentNumberSendMap,$val)) {
+        if(!in_array($val,$this->equipmentNumberSendMap)) {
             $this->equipmentNumberSendMap[] = $val;
         }
     }
     public function addEquipmentNumberNormalMap($val)
     {
-        if(!in_array($this->equipmentNumberNormalMap,$val)&&in_array($this->equipmentNumberSendMap,$val)&&in_array($this->equipmentNumberListenMap,$val)) {
+        if(!in_array($val,$this->equipmentNumberNormalMap)&&in_array($val,$this->equipmentNumberSendMap)&&in_array($val,$this->equipmentNumberListenMap)) {
             $this->equipmentNumberNormalMap[] = $val;
         }
     }
@@ -80,7 +80,7 @@ class Client
 
     public function equipmentNumberMapHas($key): bool
     {
-        if(in_array($this->equipmentNumberNormalMap,$key)||in_array($this->equipmentNumberListenMap,$key)||in_array($this->equipmentNumberSendMap,$key)){
+        if(in_array($key,$this->equipmentNumberNormalMap)||in_array($key,$this->equipmentNumberListenMap)||in_array($key,$this->equipmentNumberSendMap)){
             return true;
         }else{
             return false;
@@ -97,7 +97,7 @@ class Client
     }
     public function delEquipmentNumberNormalMap($val)
     {
-        if(in_array($this->equipmentNumberNormalMap,$val)){
+        if(in_array($val,$this->equipmentNumberNormalMap)){
             foreach ($this->equipmentNumberNormalMap as $k => $v){
                 if($v == $val) unset($this->equipmentNumberSendMap[$k]);
             }
@@ -105,7 +105,7 @@ class Client
     }
     public function delEquipmentNumberListenMap($val)
     {
-        if(in_array($this->equipmentNumberListenMap,$val)){
+        if(in_array($val,$this->equipmentNumberListenMap)){
             foreach ($this->equipmentNumberListenMap as $k => $v){
                 if($v == $val) unset($this->equipmentNumberListenMap[$k]);
             }
@@ -113,7 +113,7 @@ class Client
     }
     public function delEquipmentNumberSendMap($val)
     {
-        if(in_array($this->equipmentNumberSendMap,$val)){
+        if(in_array($val,$this->equipmentNumberSendMap)){
             foreach ($this->equipmentNumberSendMap as $k => $v){
                 if($v == $val) unset($this->equipmentNumberSendMap[$k]);
             }

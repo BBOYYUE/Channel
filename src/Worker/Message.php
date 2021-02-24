@@ -66,7 +66,7 @@ class Message
     public function setMethod($method)
     {
         try {
-            if(!$this->checkString($method)||!in_array(['query','listen','close','send'],$method))  throw new \Exception(' ');
+            if(!$this->checkString($method)||!in_array($method,['query','listen','close','send']))  throw new \Exception(' ');
             $this->method = $method;
         }catch (\Exception $e){
             throw new ErrorMethod($e->getMessage());

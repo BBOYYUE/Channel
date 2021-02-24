@@ -44,7 +44,7 @@ class Server
     public function addEquipmentNumberMap($key,$val)
     {
         if(isset($this->equipmentNumberMap[$key])) {
-            if(!in_array($this->equipmentNumberMap[$key],$val)) {
+            if(!in_array($val,$this->equipmentNumberMap[$key])) {
                 $this->equipmentNumberMap[$key][] = $val;
             }
         }else{
@@ -64,10 +64,10 @@ class Server
     public function delEquipmentNumberMap($id,$connection):void
     {
         $equipmentNumberList = array_keys($this->equipmentNumberMap);
-        if(in_array($equipmentNumberList,$id)) {
+        if(in_array($id,$equipmentNumberList)) {
             foreach ($this->equipmentNumberMap as $key => $val) {
                 $connectIdList = array_keys($val);
-                if(in_array($connectIdList,$id)) {
+                if(in_array($id,$connectIdList)) {
                     unset($this->equipmentNumberMap[$key][$id]);
                     if($this->equipmentNumberMap[$key] == []) {
                         foreach ($connection->worker->connections as $con) {
