@@ -1,0 +1,121 @@
+<?php
+
+
+namespace Bboyyue\Channel\Worker;
+
+
+use ErrorData;
+use ErrorEquipmentNumber;
+use ErrorMessage;
+use ErrorMethod;
+
+class Message
+{
+    use MessageCheck;
+
+    private string $equipmentNumber;
+    private string $method;
+    private int $tapType = 0;
+    private string $message;
+    private string $channel = 'private';
+    private array $data;
+
+
+    public function __construct($data)
+    {
+        try {
+            if(!$this->checkString($data)) throw new \Exception(' ');
+
+            $equipmentNumber = $data->equipment_number;
+            $method = $data->method;
+            $message = $data->message;
+            $this->setEquipmentNumber($equipmentNumber);
+            $this->setMethod($method);
+            $this->setMessage($message);
+            $this->setData([
+                'method'=>$this->method,
+                'channel'=>$this->channel,
+                'equipment_number'=>$this->equipmentNumber,
+                'tapType' =>$this->tapType,
+                'message' =>$this->message
+            ]);
+
+        } catch (ErrorEquipmentNumber $e){
+            throw $e;
+        } catch (ErrorMethod $e){
+            throw $e;
+        } catch (ErrorMessage $e){
+            throw $e;
+        } catch (\Exception $e) {
+            throw new ErrorData($data);
+        }
+
+
+    }
+    public function setEquipmentNumber($equipmentNumber){
+        try {
+            if(!$this->checkString($equipmentNumber)) throw new \Exception($equipmentNumber);
+            $this->equipmentNumber = $equipmentNumber;
+        }catch (\Exception $e){
+            throw new ErrorEquipmentNumber($e->getMessage());
+        }
+    }
+
+    public function setMethod($method)
+    {
+        try {
+            if(!$this->checkString($method)||!in_array(['query','listen','close','send'],$method))  throw new \Exception(' ');
+            $this->method = $method;
+        }catch (\Exception $e){
+            throw new ErrorMethod($e->getMessage());
+        }
+    }
+
+    public function setMessage($message)
+    {
+        try {
+            if(!$this->checkString($message))  throw new \Exception(' ');
+            if ($this->method === 'query') {
+                $tapType =  $message->tapType;
+                $this->setTapType($tapType);
+            }
+            $this->message = $message;
+        }catch (\Exception $e){
+            throw new ErrorMessage($e->getMessage());
+        }
+    }
+
+    public function setTapType($tapType)
+    {
+        $this->tapType = $tapType;
+    }
+
+    public function setData($data){
+        $this->data = $data;
+    }
+
+    public function addData($key,$val): array
+    {
+        $this->data[$key] = $val;
+    }
+    public function getData(): array
+    {
+        return $this->data;
+    }
+    public function getChannel(): string
+    {
+        return $this->channel;
+    }
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+    public function getEquipmentNumber(): string
+    {
+        return $this->equipmentNumber;
+    }
+}

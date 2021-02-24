@@ -1,0 +1,24 @@
+{
+    "name": "bboyyue/channel",
+    "authors": [
+        {
+            "name": "BBOYYUE",
+            "email": "bboyxiaoyue@outlook.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "workerman/workerman": "^4.0",
+        "workerman/channel": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bboyyue\\Channel\\": "./src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
