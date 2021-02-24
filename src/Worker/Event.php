@@ -87,6 +87,8 @@ class Event
     {
         $connection->id = $connection->worker->id.$connection->id;
         $connection->client = new Client($connection->id);
+        $msg = ['tapTip'=>200,'msg'=>'连接成功'];
+        $connection->send(json_encode($msg));
     }
 
     /**
@@ -98,6 +100,8 @@ class Event
     public function onClose($connection): void
     {
         $this->server->delEquipmentNumberMap($connection->id,$connection);
+        $msg = ['tapTip'=>200,'msg'=>'连接关闭'];
+        $connection->send(json_encode($msg));
     }
 
     /**
@@ -122,13 +126,15 @@ class Event
         Timer::add(10, function() use ($worker){
             $time_now = time();
             foreach($worker->connections as $connection) {
-                // 有可能该connection还没收到过消息，则lastMessageTime设置为当前时间
-                if (empty($connection->lastMessageTime)) {
-                    $connection->lastMessageTime = $time_now;
-                    continue;
+
+                if(!isset($connection->client)){
+                    $connection->id = $connection->worker->id.$connection->id;
+                    $connection->client = new Client($connection->id);
+                    $connection->client->setLastMessageTime(time());
                 }
+
                 // 上次通讯时间间隔大于心跳间隔，则认为客户端已经下线，关闭连接
-                if ($time_now - $connection->lastMessageTime > 55) {
+                if ($time_now - (int)$connection->client->getLastMessageTime() > 55) {
                     $data = [
                         'tapTip'=>500,
                         'message'=>"你没有心跳!"

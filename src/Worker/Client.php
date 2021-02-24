@@ -18,6 +18,10 @@ class Client
         $this->connectId = $id;
     }
 
+    public function getLastMessageTime(): string
+    {
+        return $this->lastMessageTime;
+    }
     public function getEquipmentNumberNormalMap():array
     {
         return $this->equipmentNumberNormalMap;
