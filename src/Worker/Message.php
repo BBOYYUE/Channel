@@ -18,7 +18,7 @@ class Message
     private string $equipmentNumber;
     private string $method;
     private int $tapType = 0;
-    private $message;
+    private Object $message;
     private string $channel = 'private';
     private array $data;
 
@@ -75,16 +75,24 @@ class Message
 
     public function setMessage($message)
     {
+
         try {
+            if($message == ' '||is_null($message)) return $this->message = new messageData();
             if($this->checkString($message)){
                 $message = json_decode($message);
             }
+
+            $this->message = new messageData();
+            foreach ($message as $key=>$val){
+                $this->message->$key = $val;
+            }
+            $this->message->equipment_number = $this->equipmentNumber;
+
             if ($this->method === 'query') {
-                $tapType =  $message->tapType;
+                $tapType =  $this->message->tapType;
                 $this->setTapType($tapType);
             }
-            $message->equipment_number = $this->equipmentNumber;
-            $this->message = $message;
+
         }catch (\Exception $e){
             throw new ErrorMessage($e->getMessage());
         }
@@ -122,5 +130,12 @@ class Message
     public function getEquipmentNumber(): string
     {
         return $this->equipmentNumber;
+    }
+}
+
+class MessageData{
+    public function __set($name, $value)
+    {
+        $this->$name = $value;
     }
 }
