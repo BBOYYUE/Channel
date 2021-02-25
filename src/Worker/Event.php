@@ -132,7 +132,7 @@ class Event
 	    try {
             $message = new Message($data);
             if($message->getMethod() == 'send') {
-                $message->addMessage('equipment_number', $connection->client->getEquipmentNumberSendMap());
+                $message->addMessage('equipment_number', $connection->client->getEquipmentNumberListenMap());
             }
             MessageMethod::run($message,$this->server, $connection);
             $connection->client->setLastMessageTime(time());
