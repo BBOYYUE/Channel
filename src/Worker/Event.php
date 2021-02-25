@@ -113,7 +113,10 @@ class Event
     public function onMessage($connection,$data)
     {
 	    try {
-		echo $data."\r\n";
+	        var_dump(Server::$equipmentNumberMap);
+	        var_dump($connection->client->getEquipmentNumberListenMap());
+	        var_dump($connection->client->getEquipmentNumberSendMap());
+            var_dump($connection->client->getEquipmentNumberNormalMap());
             $message = new Message($data);
             MessageMethod::run($message,$this->server, $connection);
             $connection->client->setLastMessageTime(time());
