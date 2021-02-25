@@ -34,6 +34,10 @@ class Event
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查
                         if(is_array($event_data['message'])||is_object($event_data['message'])){
                             $message = json_encode($event_data['message']);
+                        }elseif(is_string($event_data['message'])){
+                            $message = $event_data['message'];
+                        }else{
+                            $message = '';
                         }
                             // 公开频道向所有设备转发
                         foreach ($equipmentNumberMap as $con) {
@@ -49,6 +53,10 @@ class Event
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查
                             if(is_array($event_data['message'])||is_object($event_data['message'])){
                                 $message = json_encode($event_data['message']);
+                            }elseif(is_string($event_data['message'])){
+                                $message = $event_data['message'];
+                            }else{
+                                $message = '';
                             }
 
                             $clientList = $event_data['clientList'];
@@ -69,6 +77,10 @@ class Event
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查
                             if(is_array($event_data['message'])||is_object($event_data['message'])){
                                 $message = json_encode($event_data['message']);
+                            }elseif(is_string($event_data['message'])){
+                                $message = $event_data['message'];
+                            }else{
+                                $message = '';
                             }
                             // 只向监听这个设备的设备转发
                             foreach ($equipmentNumberMap[$equipmentNumber] as $con) {
