@@ -18,7 +18,7 @@ class Message
     private string $equipmentNumber;
     private string $method;
     private int $tapType = 0;
-    private string $message;
+    private object $message;
     private string $channel = 'private';
     private array $data;
 
@@ -76,7 +76,6 @@ class Message
     public function setMessage($message)
     {
         try {
-            if(!$this->checkString($message))  throw new \Exception(' ');
             if ($this->method === 'query') {
                 $tapType =  $message->tapType;
                 $this->setTapType($tapType);

@@ -3,10 +3,8 @@
 
 namespace Bboyyue\Channel\Worker;
 
+use Bboyyue\Channel\Exception\BaseException;
 use Channel\Client as ClientMange;
-
-use ErrorData;
-use ErrorEquipmentNumber;
 use Exception;
 use Workerman\Lib\Timer;
 
@@ -113,15 +111,11 @@ class Event
     public function onMessage($connection,$data)
     {
 	    try {
-	        var_dump(Server::$equipmentNumberMap);
-	        var_dump($connection->client->getEquipmentNumberListenMap());
-	        var_dump($connection->client->getEquipmentNumberSendMap());
-            var_dump($connection->client->getEquipmentNumberNormalMap());
             $message = new Message($data);
             MessageMethod::run($message,$this->server, $connection);
             $connection->client->setLastMessageTime(time());
         } catch (Exception $e){
-            if($e instanceof \BaseException) $connection->send($e->getMsg());
+            if($e instanceof BaseException) $connection->send($e->getMsg());
             else $connection->send($e->getMessage());
         }
     }

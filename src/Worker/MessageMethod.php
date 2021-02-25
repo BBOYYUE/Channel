@@ -3,9 +3,10 @@
 
 namespace Bboyyue\Channel\Worker;
 
+use Bboyyue\Channel\Exception\ErrorEquipmentNumber;
+use Bboyyue\Channel\Exception\MissEquipmentNumber;
 use Channel\Client as ClientMange;
-use ErrorEquipmentNumber;
-use MissEquipmentNumber;
+
 
 class MessageMethod
 {
