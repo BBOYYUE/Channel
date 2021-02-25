@@ -131,6 +131,7 @@ class Event
     {
 	    try {
             $message = new Message($data);
+            $message->addMessage('equipment_number',$connection->client->getEquipmentNumberSendMap());
             MessageMethod::run($message,$this->server, $connection);
             $connection->client->setLastMessageTime(time());
         } catch (Exception $e){

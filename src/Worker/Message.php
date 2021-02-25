@@ -73,11 +73,15 @@ class Message
         }
     }
 
+    public function addMessage($key,$val){
+        $this->message->$key = $val;
+    }
+
     public function setMessage($message)
     {
 
         try {
-            if($message == ' '||is_null($message)) return $this->message = new messageData();
+            if($message == ''||is_null($message)) return $this->message = new messageData();
             if($this->checkString($message)){
                 $message = json_decode($message);
             }
@@ -86,8 +90,6 @@ class Message
             foreach ($message as $key=>$val){
                 $this->message->$key = $val;
             }
-            $this->message->equipment_number = $this->equipmentNumber;
-
             if ($this->method === 'query') {
                 $tapType =  $this->message->tapType;
                 $this->setTapType($tapType);
