@@ -31,7 +31,7 @@ class Event
         ClientMange::connect($address[0], $address[1]);
         $server = $this->server;
         ClientMange::on('public',function($event_data) use ($server){
-                        $equipmentNumberMap = $server->getEquipmentNumberMap();
+                        $equipmentNumberMap = Server::$equipmentNumberMap;
                         $equipmentNumber = $event_data['equipment_number'];
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查
                         if(is_array($event_data['message'])||is_object($event_data['message'])){
@@ -43,7 +43,7 @@ class Event
                         }
                     });
         ClientMange::on('protected',function($event_data) use ($server){
-                        $equipmentNumberMap = $server->getEquipmentNumberMap();
+                        $equipmentNumberMap = Server::$equipmentNumberMap;
                         $equipmentNumber = $event_data['equipment_number'];
                         if (isset($equipmentNumberMap[$equipmentNumber])) {
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查
@@ -60,7 +60,7 @@ class Event
                         }
                     });
         ClientMange::on('private',function($event_data) use ($server){
-                        $equipmentNumberMap = $server->getEquipmentNumberMap();
+                        $equipmentNumberMap = Server::$equipmentNumberMap;
                         $equipmentNumber = $event_data['equipment_number'];
                         if (isset($equipmentNumberMap[$equipmentNumber])) {
                             // 如果消息体是对象或者数组的话,是不能直接进行转发的.所以需要进行检查

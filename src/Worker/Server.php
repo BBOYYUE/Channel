@@ -11,7 +11,7 @@ class Server
     private string $websocketIp;
     private string $websocketPort;
     private int $websocketProcessCount;
-    private static array $equipmentNumberMap = [];
+    public static array $equipmentNumberMap = [];
 
     public function __construct()
     {
@@ -38,7 +38,7 @@ class Server
     }
     public function getEquipmentNumberMap(): array
     {
-        return $this->equipmentNumberMap;
+        return Server::$equipmentNumberMap;
     }
 
     public function addEquipmentNumberMap($key,$val)
@@ -54,7 +54,7 @@ class Server
 
     public function setEquipmentNumberMap($key,$val)
     {
-        $this->equipmentNumberMap[$key] = [$val];
+        Server::$equipmentNumberMap[$key] = [$val];
     }
 
     /*
@@ -63,13 +63,13 @@ class Server
      */
     public function delEquipmentNumberMap($id,$connection):void
     {
-        $equipmentNumberList = array_keys($this->equipmentNumberMap);
+        $equipmentNumberList = array_keys(Server::$equipmentNumberMap);
         if(in_array($id,$equipmentNumberList)) {
-            foreach ($this->equipmentNumberMap as $key => $val) {
+            foreach (Server::$equipmentNumberMap as $key => $val) {
                 $connectIdList = array_keys($val);
                 if(in_array($id,$connectIdList)) {
-                    unset($this->equipmentNumberMap[$key][$id]);
-                    if($this->equipmentNumberMap[$key] == []) {
+                    unset(Server::$equipmentNumberMap[$key][$id]);
+                    if(Server::$equipmentNumberMap[$key] == []) {
                         foreach ($connection->worker->connections as $con) {
                             $client = $con->client;
                             $client->delEquipmentNumberMap($key);

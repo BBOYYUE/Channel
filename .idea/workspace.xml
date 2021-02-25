@@ -7,7 +7,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
+  <component name="ComposerSettings" doNotAsk="true">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -43,10 +43,17 @@
       <updated>1613888126141</updated>
       <workItem from="1613888127213" duration="36288000" />
       <workItem from="1614170269644" duration="9739000" />
+      <workItem from="1614216270853" duration="663000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="981" y="366" width="672" height="678" key="search.everywhere.popup" timestamp="1614216399923">
+      <screen x="0" y="40" width="1920" height="1040" />
+    </state>
+    <state x="981" y="366" width="672" height="678" key="search.everywhere.popup/0.40.1920.1040@0.40.1920.1040" timestamp="1614216399923" />
   </component>
 </project>

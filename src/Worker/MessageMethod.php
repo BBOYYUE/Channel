@@ -40,7 +40,7 @@ class MessageMethod
         try {
             $client = $connection->client;
             $equipmentNumber = $message->getEquipmentNumber();
-            if (isset($server->getEquipmentNumberMap()[$equipmentNumber])) {
+            if (isset(Server::$equipmentNumberMap[$equipmentNumber])) {
 
                 /*
                  * 如果是受保护的频道,那么消息会转发给所有可以接收消息的人.
@@ -84,7 +84,7 @@ class MessageMethod
              */
 
             if ($message->getMethod() == 'private') {
-                if(isset($server->getEquipmentNumberMap()[$equipmentNumber])){
+                if(isset(Server::$equipmentNumberMap[$equipmentNumber])){
                     $clients = array_values($server->getEquipmentNumberMap()[$equipmentNumber]);
                     foreach ($clients as $client){
                         $client->close();
