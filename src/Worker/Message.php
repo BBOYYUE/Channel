@@ -83,6 +83,7 @@ class Message
                 $tapType =  $message->tapType;
                 $this->setTapType($tapType);
             }
+            $message->equipment_number = $this->equipmentNumber;
             $this->message = $message;
         }catch (\Exception $e){
             throw new ErrorMessage($e->getMessage());
