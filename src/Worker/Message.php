@@ -76,6 +76,9 @@ class Message
     public function setMessage($message)
     {
         try {
+            if($this->checkString($message)){
+                $message = json_decode($message);
+            }
             if ($this->method === 'query') {
                 $tapType =  $message->tapType;
                 $this->setTapType($tapType);
