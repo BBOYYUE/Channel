@@ -11,7 +11,7 @@ class Server
     private string $websocketIp;
     private string $websocketPort;
     private int $websocketProcessCount;
-    private array $equipmentNumberMap;
+    private static array $equipmentNumberMap = [];
 
     public function __construct()
     {

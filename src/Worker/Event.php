@@ -112,7 +112,8 @@ class Event
      */
     public function onMessage($connection,$data)
     {
-        try {
+	    try {
+		echo $data."\r\n";
             $message = new Message($data);
             MessageMethod::run($message,$this->server, $connection);
             $connection->client->setLastMessageTime(time());
