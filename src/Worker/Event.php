@@ -37,7 +37,9 @@ class Event
                         }
                             // 公开频道向所有设备转发
                         foreach ($equipmentNumberMap as $con) {
-                             $con->send($event_data['message']);
+                            foreach ($con as $c) {
+                                $con->send($event_data['message']);
+                            }
                         }
                     });
         ClientMange::on('protected',function($event_data) use ($server){
@@ -52,7 +54,9 @@ class Event
                             // 受保护频道向所有发送过消息的人转发
                             foreach ($equipmentNumberMap as $key => $con) {
                                 if(in_array($key,$clientList)){
-                                    $con->send($event_data['message']);
+                                    foreach ($con as $c) {
+                                        $con->send($event_data['message']);
+                                    }
                                 }
                             }
                         }
@@ -67,7 +71,9 @@ class Event
                             }
                             // 只向监听这个设备的设备转发
                             foreach ($equipmentNumberMap[$equipmentNumber] as $con) {
-                                $con->send($event_data['message']);
+                                foreach ($con as $c) {
+                                    $con->send($event_data['message']);
+                                }
                             }
                         }
                     });
@@ -86,7 +92,7 @@ class Event
         $connection->id = $connection->worker->id.$connection->id;
         $connection->client = new Client($connection->id);
         $connection->client->setLastMessageTime(time());
-        $msg = ['tapTip'=>200,'msg'=>'连接成功'];
+        $msg = ['tapType'=>200,'msg'=>'连接成功'];
         $connection->send(json_encode($msg));
     }
 
@@ -99,7 +105,7 @@ class Event
     public function onClose($connection): void
     {
         $this->server->delEquipmentNumberMap($connection->id,$connection);
-        $msg = ['tapTip'=>200,'msg'=>'连接关闭'];
+        $msg = ['tapType'=>200,'msg'=>'连接关闭'];
         $connection->send(json_encode($msg));
     }
 
@@ -135,7 +141,7 @@ class Event
                 // 上次通讯时间间隔大于心跳间隔，则认为客户端已经下线，关闭连接
                 if ($time_now - (int)$connection->client->getLastMessageTime() > 55) {
                     $data = [
-                        'tapTip'=>500,
+                        'tapType'=>500,
                         'message'=>"你没有心跳!"
                     ];
                     $connection->send(json_encode($data));
