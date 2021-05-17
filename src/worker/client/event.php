@@ -62,6 +62,7 @@ class event
         global $equipment_number_map;
         // 心跳功能必须要的
         try {
+            
             $connection->lastMessageTime = time();
             $container = container::make($this->config,$data);
             if($error = $container->getErrorMsg()) throw new \Exception("容器初始化失败 :". $error);
@@ -75,7 +76,11 @@ class event
             if($error = $container->getErrorMsg()) throw new \Exception("End 事件执行失败:".$error);
 
         }catch (\Exception $e){
-            $connection->send($e->getMessage());
+            $data = [
+                'taoType'=>113,
+                'message'=>$e->getMessage()
+            ];
+            $connection->send(json_encode($data))
         }
     }
     public function onClose($connection)

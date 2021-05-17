@@ -76,7 +76,7 @@ class container
         try {
             if(is_string($data)&&!empty($data)) $data = json_decode($data);
             elseif(is_object($data)) $data = $data;
-            else $data = '';
+            else throw new \Exception("数据格式不正确!".$data);
 
             return $data;
         }catch (\Exception $e){
